@@ -8,20 +8,13 @@
         :root { --gold: #FFD700; --velvet: #004d40; --cream: #fdfaf6; --jasmine: #ffffff; }
         
         html, body { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; 
             background: radial-gradient(circle, #00251a, #000000);
         }
 
         body { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-family: 'Georgia', serif; 
-            perspective: 1500px; 
+            display: flex; justify-content: center; align-items: center; 
+            font-family: 'Georgia', serif; perspective: 1500px; 
         }
 
         #card { width: 90vw; max-width: 450px; height: 80vh; max-height: 600px; position: relative; transform-style: preserve-3d; box-shadow: 0 50px 100px rgba(0,0,0,0.8); }
@@ -34,15 +27,7 @@
 
         #stage { position: absolute; width: 100%; height: 100%; background: var(--cream); z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 1px solid var(--gold); }
 
-        .petal { 
-            position: absolute; 
-            background: white; 
-            border-radius: 100% 2% 100% 2%; 
-            opacity: 0; 
-            z-index: 150; 
-            pointer-events: none; 
-            box-shadow: inset 0 0 5px #fff9c4; 
-        }
+        .petal { position: absolute; background: white; border-radius: 100% 2% 100% 2%; opacity: 0; z-index: 150; pointer-events: none; box-shadow: inset 0 0 5px #fff9c4; }
 
         .cake { width: 220px; height: 130px; background: #5d3a1a; border-radius: 10px; position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.3); margin-top: 60px; transition: 1s ease; }
         .frosting { position: absolute; top: -15px; width: 100%; height: 40px; background: #fff; border-radius: 50% 50% 0 0; box-shadow: 0 5px 0 #eee; }
@@ -56,6 +41,20 @@
         .extinguished .fume { animation: smokeRise 2s ease-out forwards; }
         @keyframes smokeRise { 0% { opacity: 0.8; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(4); } }
 
+        #knife {
+            position: absolute; width: 80px; height: 20px; background: silver;
+            border-top-right-radius: 20px; border-bottom-right-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3); z-index: 180;
+            display: none; transform: rotate(-45deg); pointer-events: none;
+        }
+        #knife::after { content: ''; position: absolute; left: -30px; top: 0; width: 30px; height: 20px; background: #4a2c2a; border-radius: 5px 0 0 5px; }
+
+        @keyframes cutAction {
+            0% { transform: translate(150px, -50px) rotate(-45deg); opacity: 1; }
+            50% { transform: translate(0px, 0px) rotate(-10deg); opacity: 1; }
+            100% { transform: translate(-50px, 20px) rotate(10deg); opacity: 0; }
+        }
+
         #side-prompt { position: absolute; right: -250px; top: 15%; width: 150px; transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-style: italic; color: var(--velvet); font-weight: bold; background: rgba(212, 175, 55, 0.2); padding: 10px; border-radius: 8px; font-size: 0.9rem; }
         .open #side-prompt { right: 10px; }
 
@@ -65,8 +64,16 @@
         #cloth { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, #800, #400); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gold); transition: top 2.5s cubic-bezier(0.45, 0.05, 0.55, 0.95); border-bottom: 15px solid var(--gold); box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
         #cloth.roll-down { top: 0; }
         
-        .video-box { display: flex; gap: 10px; width: 95%; margin-top: 20px; }
+        .video-box { display: flex; gap: 10px; width: 95%; margin-top: 10px; }
         video { width: 50%; border: 2px solid var(--gold); border-radius: 5px; background: black; }
+
+        /* Unmute Button Styling */
+        #unmute-btn {
+            background: rgba(255, 255, 255, 0.2); color: white; border: 1px solid white;
+            padding: 5px 15px; border-radius: 15px; font-size: 0.8rem; cursor: pointer;
+            margin-bottom: 10px; display: none; transition: 0.3s;
+        }
+        #unmute-btn:hover { background: white; color: #800; }
 
         #replay-btn { margin-top: 20px; background: var(--gold); color: var(--velvet); border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; opacity: 0; transition: 1s; }
 
@@ -96,6 +103,7 @@
         <div id="side-prompt">"make a wish and blow off the candles (click them)"</div>
         
         <div class="cake" id="cakeNode">
+            <div id="knife"></div>
             <div class="frosting"></div>
             <div id="candle-container">
                 <div class="candle" onclick="extinguish()"><div class="flame"></div><div class="fume"></div></div>
@@ -110,6 +118,9 @@
     <div id="cloth">
         <h2 style="margin:0; letter-spacing: 2px; font-size: 1.2rem;">HAPPY BIRTHDAY</h2>
         <h1 style="margin:0; font-size: 2.5rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);">SIMPLE</h1>
+        
+        <button id="unmute-btn" onclick="unmuteVideos()">🔊 Tap for Sound</button>
+
         <div class="video-box">
             <video id="v1" src="gg2.mp4" loop playsinline muted></video>
             <video id="v2" src="gg3.mp4" loop playsinline muted></video>
@@ -176,24 +187,39 @@
         }, 3000);
     }
 
-    function revealFinale() {
-        document.getElementById('cloth').classList.add('roll-down');
+    function unmuteVideos() {
         const v1 = document.getElementById('v1');
         const v2 = document.getElementById('v2');
-        
-        v1.play();
-        v2.play();
+        const btn = document.getElementById('unmute-btn');
+
+        // Unmute and hide the button
+        v1.muted = false;
+        v2.muted = false;
+        btn.style.display = 'none';
+    }
+
+    function revealFinale() {
+        const knife = document.getElementById('knife');
+        knife.style.display = 'block';
+        knife.style.animation = 'cutAction 1.2s ease-in-out forwards';
+
+        setTimeout(() => {
+            document.getElementById('cloth').classList.add('roll-down');
+            document.getElementById('unmute-btn').style.display = 'block'; // Show unmute button
+            const v1 = document.getElementById('v1');
+            const v2 = document.getElementById('v2');
+            v1.play();
+            v2.play();
+        }, 1200);
 
         setTimeout(() => {
             const btn = document.getElementById('replay-btn');
             btn.style.opacity = '1';
             btn.style.pointerEvents = 'auto';
-        }, 10000);
+        }, 11000);
     }
 </script>
 
 </body>
 </html>
 
-</body>
-</html>
