@@ -43,16 +43,6 @@
             pointer-events: none; 
             box-shadow: inset 0 0 5px #fff9c4; 
         }
-        .petal::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #fdd835;
-            border-radius: 50%;
-            top: 40%;
-            left: 40%;
-        }
 
         .cake { width: 220px; height: 130px; background: #5d3a1a; border-radius: 10px; position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.3); margin-top: 60px; transition: 1s ease; }
         .frosting { position: absolute; top: -15px; width: 100%; height: 40px; background: #fff; border-radius: 50% 50% 0 0; box-shadow: 0 5px 0 #eee; }
@@ -62,23 +52,6 @@
         @keyframes flicker { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-52%) scale(1.15); opacity: 0.9; } 100% { transform: translateX(-48%) scale(1); } }
         .extinguished .flame { display: none; }
         
-        #knife { 
-            position: absolute; 
-            font-size: 50px; 
-            top: 20%; 
-            left: 70%; 
-            display: none; 
-            z-index: 10; 
-            transition: all 1s ease-in-out;
-        }
-        .cutting-action {
-            animation: slice 0.6s infinite alternate;
-        }
-        @keyframes slice {
-            from { transform: rotate(-45deg) translate(0, 0); }
-            to { transform: rotate(-45deg) translate(-10px, 20px); }
-        }
-
         .fume { position: absolute; top: -25px; left: 50%; width: 5px; height: 5px; background: rgba(150,150,150,0.6); border-radius: 50%; opacity: 0; pointer-events: none; }
         .extinguished .fume { animation: smokeRise 2s ease-out forwards; }
         @keyframes smokeRise { 0% { opacity: 0.8; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(4); } }
@@ -113,124 +86,4 @@
     <div id="ribbon-container" onclick="untieRibbon()">
         <div class="ribbon-half ribbon-left"></div>
         <div class="knot">OPEN</div>
-        <div class="ribbon-half ribbon-right"></div>
-    </div>
-
-    <div class="door left">FOR</div>
-    <div class="door right">SIMPLE</div>
-
-    <div id="stage">
-        <div id="side-prompt">"make a wish and blow off the candles (click them)"</div>
-        
-        <div class="cake" id="cakeNode">
-            <div class="frosting"></div>
-            <div id="knife">🔪</div>
-            <div id="candle-container">
-                <div class="candle" onclick="extinguish()"><div class="flame"></div><div class="fume"></div></div>
-                <div class="candle" onclick="extinguish()"><div class="flame"></div><div class="fume"></div></div>
-                <div class="candle" onclick="extinguish()"><div class="flame"></div><div class="fume"></div></div>
-            </div>
-        </div>
-
-        <div id="eat-prompt" onclick="revealFinale()">eat my darling (click here)</div>
-    </div>
-
-    <div id="cloth">
-        <h2 style="margin:0; letter-spacing: 2px; font-size: 1.2rem;">HAPPY BIRTHDAY</h2>
-        <h1 style="margin:0; font-size: 2.5rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);">SIMPLE</h1>
-        <div class="video-box">
-            <video id="v1" src="GG2.mp4" loop playsinline muted></video>
-            <video id="v2" src="GG3.mp4" loop playsinline muted></video>
-        </div>
-        <button id="replay-btn" onclick="location.reload()">Replay Card</button>
-    </div>
-</div>
-
-<audio id="bdaySong" src="birthday.mp3"></audio>
-
-<script>
-    let musicStarted = false;
-
-    function untieRibbon() {
-        document.getElementById('ribbon-container').classList.add('untied');
-        setTimeout(() => {
-            document.getElementById('ribbon-container').style.display = 'none';
-            openCard();
-        }, 800);
-    }
-
-    function openCard() {
-        document.getElementById('card').classList.add('open');
-        createJasmineShower();
-    }
-
-    function createJasmineShower() {
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-                const petal = document.createElement('div');
-                petal.className = 'petal';
-                const sizeNum = Math.random() * 15 + 10;
-                petal.style.width = sizeNum + 'px';
-                petal.style.height = sizeNum + 'px';
-                petal.style.left = Math.random() * 100 + 'vw';
-                petal.style.top = '-50px';
-                document.body.appendChild(petal);
-
-                const duration = Math.random() * 4 + 3;
-                petal.animate([
-                    { transform: `translateY(0) rotate(45deg)`, opacity: 0.9 },
-                    { transform: `translateY(110vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-                ], { duration: duration * 1000, easing: 'linear' });
-
-                setTimeout(() => petal.remove(), duration * 1000);
-            }, i * 120);
-        }
-    }
-
-    function extinguish() {
-        if (musicStarted) return;
-        musicStarted = true;
-
-        const candles = document.querySelectorAll('.candle');
-        candles.forEach(c => c.classList.add('extinguished'));
-        document.getElementById('side-prompt').style.opacity = '0';
-        
-        const audio = document.getElementById('bdaySong');
-        audio.play().catch(() => console.log("Audio playing..."));
-
-        setTimeout(() => {
-            candles.forEach(c => c.style.opacity = '0');
-            const knife = document.getElementById('knife');
-            knife.style.display = 'block';
-            
-            setTimeout(() => {
-                knife.style.left = '45%';
-                knife.style.top = '10%';
-                knife.classList.add('cutting-action');
-            }, 100);
-
-            setTimeout(() => {
-                knife.style.opacity = '0';
-                document.getElementById('cakeNode').style.transform = "translateY(-20px) scale(1.05)";
-                document.getElementById('eat-prompt').style.display = 'block';
-            }, 2500);
-        }, 1500);
-    }
-
-    function revealFinale() {
-        document.getElementById('cloth').classList.add('roll-down');
-        const v1 = document.getElementById('v1');
-        const v2 = document.getElementById('v2');
-        v1.play();
-        v2.play();
-
-        setTimeout(() => {
-            const btn = document.getElementById('replay-btn');
-            btn.style.opacity = '1';
-            btn.style.pointerEvents = 'auto';
-        }, 10000);
-    }
-</script>
-
-</body>
-</html>
+        <div
