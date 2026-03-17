@@ -7,7 +7,6 @@
     <style>
         :root { --gold: #FFD700; --velvet: #004d40; --cream: #fdfaf6; --jasmine: #ffffff; }
         
-        /* FIX 1: Ensures content fits the mobile screen and hides the 'reveal' section */
         html, body { 
             margin: 0; 
             padding: 0; 
@@ -27,17 +26,14 @@
 
         #card { width: 90vw; max-width: 450px; height: 80vh; max-height: 600px; position: relative; transform-style: preserve-3d; box-shadow: 0 50px 100px rgba(0,0,0,0.8); }
 
-        /* Elegant Leaf Doors */
         .door { position: absolute; width: 50%; height: 100%; background: var(--velvet); border: 2px solid var(--gold); z-index: 100; transition: transform 2s cubic-bezier(0.45, 0.05, 0.55, 0.95); transform-origin: left; display: flex; align-items: center; justify-content: center; color: var(--gold); cursor: pointer; backface-visibility: hidden; font-weight: bold; }
         .door.right { right: 0; transform-origin: right; border-left: none; }
         .door.left { left: 0; transform-origin: left; border-right: none; }
         .open .door.left { transform: rotateY(-140deg); }
         .open .door.right { transform: rotateY(140deg); }
 
-        /* Interior Stage */
         #stage { position: absolute; width: 100%; height: 100%; background: var(--cream); z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 1px solid var(--gold); }
 
-        /* FIX 2: Enhanced Jasmine Petal Styling with yellow center */
         .petal { 
             position: absolute; 
             background: white; 
@@ -58,7 +54,6 @@
             left: 40%;
         }
 
-        /* Cake & Interactive Elements */
         .cake { width: 220px; height: 130px; background: #5d3a1a; border-radius: 10px; position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.3); margin-top: 60px; transition: 1s ease; }
         .frosting { position: absolute; top: -15px; width: 100%; height: 40px; background: #fff; border-radius: 50% 50% 0 0; box-shadow: 0 5px 0 #eee; }
         .candle { width: 10px; height: 45px; background: linear-gradient(to bottom, #d4af37, #f1c40f); position: relative; display: inline-block; margin: 0 12px; cursor: pointer; top: -55px; border-radius: 2px; transition: opacity 0.5s; }
@@ -67,7 +62,6 @@
         @keyframes flicker { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-52%) scale(1.15); opacity: 0.9; } 100% { transform: translateX(-48%) scale(1); } }
         .extinguished .flame { display: none; }
         
-        /* FIX 3: Knife Styling and Animation */
         #knife { 
             position: absolute; 
             font-size: 50px; 
@@ -85,19 +79,16 @@
             to { transform: rotate(-45deg) translate(-10px, 20px); }
         }
 
-        /* Fumes/Smoke */
         .fume { position: absolute; top: -25px; left: 50%; width: 5px; height: 5px; background: rgba(150,150,150,0.6); border-radius: 50%; opacity: 0; pointer-events: none; }
         .extinguished .fume { animation: smokeRise 2s ease-out forwards; }
         @keyframes smokeRise { 0% { opacity: 0.8; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(4); } }
 
-        /* Side Text Prompt */
         #side-prompt { position: absolute; right: -250px; top: 15%; width: 150px; transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-style: italic; color: var(--velvet); font-weight: bold; background: rgba(212, 175, 55, 0.2); padding: 10px; border-radius: 8px; font-size: 0.9rem; }
         .open #side-prompt { right: 10px; }
 
         #eat-prompt { display: none; margin-top: 30px; font-weight: bold; color: #700; cursor: pointer; animation: heartbeat 1.5s infinite; font-size: 1.2rem; }
         @keyframes heartbeat { 0% { transform: scale(1); } 10% { transform: scale(1.1); } 20% { transform: scale(1); } }
 
-        /* The Cloth Backdrop Reveal */
         #cloth { position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, #800, #400); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gold); transition: top 2.5s cubic-bezier(0.45, 0.05, 0.55, 0.95); border-bottom: 15px solid var(--gold); box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
         #cloth.roll-down { top: 0; }
         
@@ -106,7 +97,6 @@
 
         #replay-btn { margin-top: 20px; background: var(--gold); color: var(--velvet); border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; opacity: 0; transition: 1s; }
 
-        /* The Ribbon and Knot */
         #ribbon-container { position: absolute; width: 100%; height: 100%; z-index: 200; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease-in-out; }
         .ribbon-half { position: absolute; width: 50%; height: 40px; background: var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .ribbon-left { left: 0; }
@@ -149,8 +139,8 @@
         <h2 style="margin:0; letter-spacing: 2px; font-size: 1.2rem;">HAPPY BIRTHDAY</h2>
         <h1 style="margin:0; font-size: 2.5rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);">SIMPLE</h1>
         <div class="video-box">
-            <video id="v1" src="GG2.mp4" loop playsinline></video>
-            <video id="v2" src="GG3.mp4" loop playsinline></video>
+            <video id="v1" src="GG2.mp4" loop playsinline muted></video>
+            <video id="v2" src="GG3.mp4" loop playsinline muted></video>
         </div>
         <button id="replay-btn" onclick="location.reload()">Replay Card</button>
     </div>
@@ -206,14 +196,10 @@
         document.getElementById('side-prompt').style.opacity = '0';
         
         const audio = document.getElementById('bdaySong');
-        audio.play().catch(() => console.log("Audio waiting for user interaction"));
+        audio.play().catch(() => console.log("Audio playing..."));
 
-        // FIX 3: Transition logic - Hide candles, show knife, animate cut
         setTimeout(() => {
-            // Fade out candles
             candles.forEach(c => c.style.opacity = '0');
-            
-            // Show and animate knife
             const knife = document.getElementById('knife');
             knife.style.display = 'block';
             
@@ -223,7 +209,6 @@
                 knife.classList.add('cutting-action');
             }, 100);
 
-            // Show 'Eat my darling' after the knife has "cut"
             setTimeout(() => {
                 knife.style.opacity = '0';
                 document.getElementById('cakeNode').style.transform = "translateY(-20px) scale(1.05)";
