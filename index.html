@@ -11,7 +11,7 @@
             margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; 
             background: radial-gradient(circle, #00251a, #000000);
         }
-#adding heartbeat
+
         .heartbeat-flicker {
     display: inline-block;
     animation: pulse-flicker 1.5s infinite;
@@ -25,7 +25,7 @@
     40% { transform: scale(1); opacity: 0.8; }
     100% { transform: scale(1); opacity: 0.8; }
 }
- #remove if needed
+
 
         
         body { 
@@ -68,7 +68,31 @@
         .extinguished .fume { animation: smokeRise 2s ease-out forwards; }
         @keyframes smokeRise { 0% { opacity: 0.8; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(4); } }
 
-        #side-prompt { display: none; margin-top: 30px; font-weight: bold; color: #700; cursor: pointer; animation: heartbeat 1.5s infinite; font-size: 1.2rem; }
+        #side-prompt #side-prompt { 
+    position: absolute; 
+    left: 50%;
+    top: 15%; 
+    transform: translate(-50%, -20px); 
+    width: 80%; 
+    text-align: center;
+    opacity: 0; /* Hidden by default but still exists in the layout */
+    transition: all 1.5s ease; 
+    font-style: italic; 
+    color: var(--velvet); 
+    font-weight: bold; 
+    background: rgba(212, 175, 55, 0.2); 
+    padding: 10px; 
+    border-radius: 8px; 
+    font-size: 0.9rem; 
+    z-index: 10;
+    pointer-events: none; /* Prevents it from blocking candle clicks */
+}
+
+/* When the card is opened, this makes it visible */
+.open #side-prompt { 
+    opacity: 1;
+    transform: translate(-50%, 0); 
+}
         @keyframes heartbeat { 0% { transform: scale(1); } 10% { transform: scale(1.1); } 20% { transform: scale(1); } }
 
         #eat-prompt { display: none; margin-top: 30px; font-weight: bold; color: #700; cursor: pointer; animation: heartbeat 1.5s infinite; font-size: 1.2rem; }
