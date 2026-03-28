@@ -71,23 +71,30 @@
         #side-prompt #side-prompt { 
     position: absolute; 
     left: 50%;
-    top: 15%; 
+    top: 12%; /* Adjusted higher to stay away from the cake */
     transform: translate(-50%, -20px); 
-    width: 80%; 
+    width: 85%; 
+    max-width: 350px;
     text-align: center;
-    opacity: 0; /* Hidden by default but still exists in the layout */
+    opacity: 0; 
     transition: all 1.5s ease; 
     font-style: italic; 
     color: var(--velvet); 
     font-weight: bold; 
-    background: rgba(212, 175, 55, 0.2); 
+    background: rgba(212, 175, 55, 0.3); 
     padding: 10px; 
     border-radius: 8px; 
-    font-size: 0.9rem; 
-    z-index: 10;
-    pointer-events: none; /* Prevents it from blocking candle clicks */
+    font-size: 0.95rem; 
+    z-index: 150; /* Higher than the doors */
+    pointer-events: none;
+    box-sizing: border-box;
 }
 
+/* This triggers the fade-in and centering when card opens */
+.open #side-prompt { 
+    opacity: 1;
+    transform: translate(-50%, 0); 
+}
 /* When the card is opened, this makes it visible */
 .open #side-prompt { 
     opacity: 1;
